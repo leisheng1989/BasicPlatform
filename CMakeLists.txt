@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 # 工程名
-project(scheduling-server)
+project(basic-platform)
 
 message(STATUS "Host system: ${CMAKE_SYSTEM} ${CMAKE_SYSTEM_PROCESSOR}")
 

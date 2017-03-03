@@ -10,10 +10,10 @@ include_directories(
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -pthread")
 
 # 指定生成 执行文件
-add_executable(scheduling-server ${DIR_SRCS})
+add_executable(basic-platform ${DIR_SRCS})
 # link library
 #target_link_libraries(scheduling-server iniparser)
-target_link_libraries(scheduling-server zlog)
+target_link_libraries(basic-platform zlog)
 
 # 指定安装路径
-install(TARGETS scheduling-server DESTINATION bin)
+install(TARGETS basic-platform DESTINATION bin)

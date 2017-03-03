@@ -1,5 +1,5 @@
 /* Project Name */
-#define APP_NAME "scheduling-server"
+#define APP_NAME "basic-platform"
 
 /*
  * VERSION
