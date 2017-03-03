@@ -71,7 +71,7 @@ else ()
 endif()
 
 # 设置安装路径
-set(CMAKE_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/target")
+set(CMAKE_INSTALL_PREFIX "/opt/${PROJECT_NAME}")
 
 # 构建一个 CPack 安装包
 include (InstallRequiredSystemLibraries)
