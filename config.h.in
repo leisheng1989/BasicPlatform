@@ -1,0 +1,9 @@
+/* Project Name */
+#define APP_NAME "@CMAKE_PROJECT_NAME@"
+
+/*
+ * VERSION
+ */
+#define VERSION_MAJOR @VERSION_MAJOR@
+#define VERSION_MINOR @VERSION_MINOR@
+#define VERSION_PATCH @VERSION_PATCH@
