@@ -108,10 +108,10 @@ zlog_conf_t *zlog_conf_new(const char *confpath)
 
 	if (confpath && confpath[0] != '\0') {
 		nwrite = snprintf(a_conf->file, sizeof(a_conf->file), "%s", confpath);
-		// has_conf_file = 1; // rotate_lock_file Always use the ZLOG_CONF_BACKUP_ROTATE_LOCK_FILE
+		has_conf_file = 1;
 	} else if (getenv("ZLOG_CONF_PATH") != NULL) {
 		nwrite = snprintf(a_conf->file, sizeof(a_conf->file), "%s", getenv("ZLOG_CONF_PATH"));
-		// has_conf_file = 1; // rotate_lock_file Always use the ZLOG_CONF_BACKUP_ROTATE_LOCK_FILE
+		has_conf_file = 1;
 	} else {
 		memset(a_conf->file, 0x00, sizeof(a_conf->file));
 		has_conf_file = 0;
@@ -125,12 +125,16 @@ zlog_conf_t *zlog_conf_new(const char *confpath)
 	a_conf->strict_init = 1;
 	a_conf->buf_size_min = ZLOG_CONF_DEFAULT_BUF_SIZE_MIN;
 	a_conf->buf_size_max = ZLOG_CONF_DEFAULT_BUF_SIZE_MAX;
+#if 0    
 	if (has_conf_file) {
 		/* configure file as default lock file */
 		strcpy(a_conf->rotate_lock_file, a_conf->file);
 	} else {
 		strcpy(a_conf->rotate_lock_file, ZLOG_CONF_BACKUP_ROTATE_LOCK_FILE);
 	}
+#endif
+    /* configure ZLOG_CONF_BACKUP_ROTATE_LOCK_FILE as default lock file */
+    strcpy(a_conf->rotate_lock_file, ZLOG_CONF_BACKUP_ROTATE_LOCK_FILE);
 	strcpy(a_conf->default_format_line, ZLOG_CONF_DEFAULT_FORMAT);
 	a_conf->file_perms = ZLOG_CONF_DEFAULT_FILE_PERMS;
 	a_conf->reload_conf_period = ZLOG_CONF_DEFAULT_RELOAD_CONF_PERIOD;
