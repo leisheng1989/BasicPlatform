@@ -1,4 +1,6 @@
 
+PROJECT_NAME		:= basic-platform
+INSTALL_PREFIX		:= /opt/${PROJECT_NAME}
 PROJECT_ROOT_PATCH	:= $(shell pwd)
 BUILD_PATCH			:= $(PROJECT_ROOT_PATCH)/build
 
@@ -24,11 +26,14 @@ all:
 	make
 
 install:
-	cd $(BUILD_PATCH) && make install
+	mkdir -p ${HOME}/.${PROJECT_NAME}/logs
+	cd $(BUILD_PATCH) && \
+	sudo make install && \
+	sudo ln -sf ${INSTALL_PREFIX}/bin/${PROJECT_NAME} /usr/bin/${PROJECT_NAME}
 
 .PHONY: clean
 clean:
 	cd $(BUILD_PATCH) && make clean
 
 distclean:
-	rm -r build
+	rm -rf build
