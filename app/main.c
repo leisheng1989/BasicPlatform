@@ -8,7 +8,9 @@
 #include "iniparser.h"
 #include "SysLogPublic.h"
 
-static char *pLogCfgName; /* log config file name */
+#define LOGCFG_NAME_DEFAULT     "/opt/basic-platform/configs/log.conf"
+
+static char *pLogCfgName = LOGCFG_NAME_DEFAULT; /* log config file name */
 
 
 /**
@@ -44,7 +46,7 @@ void PrintUsage(const char *program_name) {
     printf("This is a program\n");
     printf("    --version             show program's version number and exit\n");  
     printf("    -h, --help            show this help message and exit\n");
-    printf("    -l, --log            the log config file name\n"); 
+    printf("    -l, --log            the log config file name,\n"); 
 }
 
 /**
@@ -64,13 +66,13 @@ int UsrOptHdl(int argc, char *argv[])
      int opt = 0;
     if (NULL == argv)
         return -1;
-
+#if 0
     if (argc < 2) {
         /* no user option, give default */
         PrintUsage(APP_NAME);
         return -2;
     }
-
+#endif
     while (1) {
         opt = getopt_long(argc, argv, short_opts, lng_opts, &idx);
         /* get the last */
@@ -103,6 +105,8 @@ int UsrOptHdl(int argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
+    unsigned cnt;
+    
     UsrOptHdl(argc, argv);
 
     if (pLogCfgName) {
@@ -110,7 +114,12 @@ int main(int argc, char *argv[])
     }
 
     SysFatalTrace("%s initialize successfully", APP_NAME);
-    
+    while (1) {
+        cnt ++;
+        usleep(1000);
+        SysDebugTrace("*********  %d **********", cnt);
+    }
+
     return 0;
 }
 
