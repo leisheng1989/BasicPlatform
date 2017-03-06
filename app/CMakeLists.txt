@@ -17,3 +17,5 @@ target_link_libraries(${PROJECT_NAME} zlog)
 
 # 指定安装路径
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+install (FILES "${PROJECT_SOURCE_DIR}/configs/log.conf" DESTINATION configs)
+
