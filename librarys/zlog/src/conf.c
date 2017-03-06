@@ -108,10 +108,10 @@ zlog_conf_t *zlog_conf_new(const char *confpath)
 
 	if (confpath && confpath[0] != '\0') {
 		nwrite = snprintf(a_conf->file, sizeof(a_conf->file), "%s", confpath);
-		has_conf_file = 1;
+		// has_conf_file = 1; // rotate_lock_file Always use the ZLOG_CONF_BACKUP_ROTATE_LOCK_FILE
 	} else if (getenv("ZLOG_CONF_PATH") != NULL) {
 		nwrite = snprintf(a_conf->file, sizeof(a_conf->file), "%s", getenv("ZLOG_CONF_PATH"));
-		has_conf_file = 1;
+		// has_conf_file = 1; // rotate_lock_file Always use the ZLOG_CONF_BACKUP_ROTATE_LOCK_FILE
 	} else {
 		memset(a_conf->file, 0x00, sizeof(a_conf->file));
 		has_conf_file = 0;
