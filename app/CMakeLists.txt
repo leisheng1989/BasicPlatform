@@ -7,7 +7,7 @@ include_directories(
 	../librarys/zlog/include/
 )
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -pthread")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread")
 
 # 指定生成 执行文件
 add_executable(${PROJECT_NAME} ${DIR_SRCS})
