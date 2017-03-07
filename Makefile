@@ -4,6 +4,7 @@ INSTALL_PREFIX		:= /opt/${PROJECT_NAME}
 PROJECT_ROOT_PATCH	:= $(shell pwd)
 BUILD_PATCH			:= $(PROJECT_ROOT_PATCH)/build
 
+SUDO_USER	:= ${USER}
 BUILD_TYPE = 
 USE_BITS = 
 
@@ -28,12 +29,22 @@ all:
 install:
 	mkdir -p ${HOME}/.${PROJECT_NAME}/logs
 	cd $(BUILD_PATCH) && \
-	sudo make install && \
+	make install && \
+	sudo mkdir -p ${INSTALL_PREFIX}/bin && \
+	sudo mkdir -p ${INSTALL_PREFIX}/configs && \
+	sudo cp -Ra $(PROJECT_ROOT_PATCH)/target/bin/* ${INSTALL_PREFIX}/bin && \
+	sudo cp -Ra $(PROJECT_ROOT_PATCH)/target/configs/* ${INSTALL_PREFIX}/configs && \
 	sudo ln -sf ${INSTALL_PREFIX}/bin/${PROJECT_NAME} /usr/bin/${PROJECT_NAME}
 
-.PHONY: clean
+packe:
+	cd $(BUILD_PATCH) && \
+	cpack -C CPackConfig.cmake && \
+	cp -Ra $(BUILD_PATCH)/*.tar* $(PROJECT_ROOT_PATCH)/release
+
 clean:
 	cd $(BUILD_PATCH) && make clean
 
 distclean:
 	rm -rf build
+
+.PHONY: clean install distclean

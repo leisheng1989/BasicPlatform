@@ -16,6 +16,10 @@ add_executable(${PROJECT_NAME} ${DIR_SRCS})
 target_link_libraries(${PROJECT_NAME} zlog)
 
 # 指定安装路径
+# 安装可执行文件，动静态库
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+#　安装普通文件
 install (FILES "${PROJECT_SOURCE_DIR}/configs/log.conf" DESTINATION configs)
-
+# 安装脚本文件
+install (PROGRAMS "${PROJECT_SOURCE_DIR}/target/install.sh" DESTINATION .)
+install (PROGRAMS "${PROJECT_SOURCE_DIR}/target/uninstall.sh" DESTINATION .)
