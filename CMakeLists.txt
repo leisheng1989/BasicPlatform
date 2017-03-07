@@ -9,9 +9,9 @@ project(basic-platform)
 message(STATUS "Host system: ${CMAKE_SYSTEM} ${CMAKE_SYSTEM_PROCESSOR}")
 
 #版本信息
-set(VERSION_MAJOR 0)
+set(VERSION_MAJOR 1)
 set(VERSION_MINOR 0)
-set(VERSION_PATCH 1)
+set(VERSION_PATCH 0)
 
 if (WIN32)
   #do something related to WIN32
