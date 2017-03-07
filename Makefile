@@ -39,6 +39,7 @@ install:
 packe:
 	cd $(BUILD_PATCH) && \
 	cpack -C CPackConfig.cmake && \
+	mkdir -p $(PROJECT_ROOT_PATCH)/release && \
 	cp -Ra $(BUILD_PATCH)/*.tar* $(PROJECT_ROOT_PATCH)/release
 
 clean:
