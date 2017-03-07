@@ -50,9 +50,9 @@ set(CMAKE_C_FLAGS "-Wall -pipe -fmessage-length=0 -ffunction-sections -fdata-sec
 set(CMAKE_C_FLAGS_DEBUG "-g -ggdb -DDEBUG")
 set(CMAKE_C_FLAGS_RELEASE "-O3 -static -DNDEBUG")
 
-if (USE_BITS EQUAL 32)
+if (USE_BITS MATCHES "i386")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
-elseif (USE_BITS EQUAL 64)
+elseif (USE_BITS MATCHES "x86_64")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m64")
 endif()
 
@@ -89,6 +89,7 @@ set(CPACK_PACKAGE_CONTACT "http://www.excera.com.cn")
 set(CPACK_PACKAGE_VERSION_MAJOR "${VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${VERSION_MINOR}")
 set(CPACK_PACKAGE_VERSION_PATCH "${VERSION_PATCH}")
+set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}-${CMAKE_SYSTEM_NAME}-${USE_BITS}")
 include (CPack)
 # 生成二进制安装包
 #cpack -C CPackConfig.cmake

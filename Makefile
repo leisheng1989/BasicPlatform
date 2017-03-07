@@ -15,9 +15,9 @@ else
 endif
 
 ifeq ($(BITS), 64)
-	USE_BITS := 64
+	USE_BITS := x86_64
 else
-	USE_BITS := 32
+	USE_BITS := i386
 endif
 
 all:
