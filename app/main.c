@@ -46,7 +46,7 @@ void PrintUsage(const char *program_name) {
     printf("This is a program\n");
     printf("    --version             show program's version number and exit\n");  
     printf("    -h, --help            show this help message and exit\n");
-    printf("    -l, --log            the log config file name,\n"); 
+    printf("    -l, --log             the log config file name\n"); 
 }
 
 /**
@@ -84,6 +84,7 @@ int UsrOptHdl(int argc, char *argv[])
         case 'V':
         case 'v':
             PrintVersion(APP_NAME); 
+            exit(0);
             break;
 
         case 'l':
@@ -95,6 +96,7 @@ int UsrOptHdl(int argc, char *argv[])
         case 'h':
         default:
             PrintUsage(APP_NAME);
+            exit(0);
             break;
         }
     }
