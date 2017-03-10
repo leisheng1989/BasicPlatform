@@ -7,6 +7,7 @@
 #include "config.h"
 #include "iniparser.h"
 #include "SysLogPublic.h"
+#include "osal.h"
 
 #define LOGCFG_NAME_DEFAULT     "/opt/basic-platform/configs/log.conf"
 
@@ -104,9 +105,29 @@ int UsrOptHdl(int argc, char *argv[])
     return 0;
 }
 
+static void *thread(void *arg)
+{
+    unsigned int id;
+    unsigned long thread_id;
+    unsigned cunt;
+
+    cunt = 0;
+    id = (unsigned int )arg;
+
+    thread_id = osal_thread_self();
+    
+    while(1) {
+        SysDebugTrace("Thread(0x%0lx) %d: cunt=%d", thread_id, id, cunt);
+        cunt++;
+        osal_thread_msleep(id * 1000);
+    }
+    
+    return  NULL;
+}
 
 int main(int argc, char *argv[])
 {
+    int ret;
     unsigned cnt;
     
     UsrOptHdl(argc, argv);
@@ -115,11 +136,18 @@ int main(int argc, char *argv[])
         SysLogInit(pLogCfgName);
     }
 
-    SysFatalTrace("%s initialize successfully", APP_NAME);
+    for(cnt = 0; cnt < 10; cnt++) {
+        ret = osal_thread_create(OSAL_SCHED_OTHER, 0, 0, thread, (void *)(cnt + 1));
+        if (ret == 0) {
+            SysFatalTrace("osal_thread_create %d successfully", cnt);
+        }
+    }
+
+    cnt = 0;
     while (1) {
         cnt ++;
-        usleep(1000);
-        SysDebugTrace("*********  %d **********", cnt);
+        osal_thread_sleep(5);
+        SysDebugTrace("********* Main thread cnt=%d **********", cnt);
     }
 
     return 0;
