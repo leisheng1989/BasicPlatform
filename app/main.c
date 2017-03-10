@@ -105,35 +105,51 @@ int UsrOptHdl(int argc, char *argv[])
     return 0;
 }
 
+static unsigned int glob = 0;
+static osal_thread_mutex_t *lock;
+
 static void *thread(void *arg)
 {
-    unsigned int id;
-    unsigned long thread_id;
-    unsigned cunt;
-
-    cunt = 0;
-    id = (unsigned int )arg;
-
-    thread_id = osal_thread_self();
+    unsigned int loops = 10000000;
+    unsigned int loc;
+    unsigned int j;
+    int ret;
     
-    while(1) {
-        SysDebugTrace("Thread(0x%0lx) %d: cunt=%d", thread_id, id, cunt);
-        cunt++;
-        osal_thread_msleep(id * 1000);
+    for (j = 0; j < loops; j++) {
+        ret = osal_thread_mutex_lock(lock);
+        if (ret != 0) {
+            SysErrorTrace("osal_thread_mutex_lock failed %d", ret);
+        }
+        
+        loc = glob;
+        loc++;
+        glob = loc;
+        
+        ret = osal_thread_mutex_unlock(lock);
+        if (ret != 0) {
+            SysErrorTrace("osal_thread_mutex_unlock failed %d", ret);
+        }
     }
-    
+
+    SysDebugTrace("Thread %d: glob=%d", (int)arg, glob);
+
     return  NULL;
 }
 
 int main(int argc, char *argv[])
 {
     int ret;
-    unsigned cnt;
+    int cnt;
     
     UsrOptHdl(argc, argv);
 
     if (pLogCfgName) {
         SysLogInit(pLogCfgName);
+    }
+
+    lock = osal_thread_mutex_create();
+    if ( lock == NULL) {
+        SysErrorTrace("osal_thread_mutex_create fail");
     }
 
     for(cnt = 0; cnt < 10; cnt++) {
@@ -143,11 +159,9 @@ int main(int argc, char *argv[])
         }
     }
 
-    cnt = 0;
     while (1) {
-        cnt ++;
-        osal_thread_sleep(5);
-        SysDebugTrace("********* Main thread cnt=%d **********", cnt);
+        osal_thread_sleep(15);
+        SysDebugTrace("******** main thread *********");
     }
 
     return 0;
