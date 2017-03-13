@@ -106,17 +106,17 @@ int UsrOptHdl(int argc, char *argv[])
 }
 
 static unsigned int glob = 0;
-static osal_thread_mutex_t *lock;
+static osal_thread_spin_t *lock;
 
 static void *thread(void *arg)
 {
     unsigned int loops = 10000000;
     unsigned int loc;
     unsigned int j;
-    int ret;
+    int ret = 0;
     
     for (j = 0; j < loops; j++) {
-        ret = osal_thread_mutex_lock(lock);
+        ret = osal_thread_spin_lock(lock);
         if (ret != 0) {
             SysErrorTrace("osal_thread_mutex_lock failed %d", ret);
         }
@@ -125,7 +125,7 @@ static void *thread(void *arg)
         loc++;
         glob = loc;
         
-        ret = osal_thread_mutex_unlock(lock);
+        ret = osal_thread_spin_unlock(lock);
         if (ret != 0) {
             SysErrorTrace("osal_thread_mutex_unlock failed %d", ret);
         }
@@ -147,7 +147,7 @@ int main(int argc, char *argv[])
         SysLogInit(pLogCfgName);
     }
 
-    lock = osal_thread_mutex_create();
+    lock = osal_thread_spin_create();
     if ( lock == NULL) {
         SysErrorTrace("osal_thread_mutex_create fail");
     }
