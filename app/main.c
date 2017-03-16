@@ -105,30 +105,17 @@ int UsrOptHdl(int argc, char *argv[])
     return 0;
 }
 
-static unsigned int glob = 0;
-static osal_thread_spin_t *lock;
-
+static volatile unsigned int glob = 0;
+static atom_spinlock_t lock;
 static void *thread(void *arg)
 {
     unsigned int loops = 10000000;
-    unsigned int loc;
     unsigned int j;
-    int ret = 0;
     
     for (j = 0; j < loops; j++) {
-        ret = osal_thread_spin_lock(lock);
-        if (ret != 0) {
-            SysErrorTrace("osal_thread_mutex_lock failed %d", ret);
-        }
-        
-        loc = glob;
-        loc++;
-        glob = loc;
-        
-        ret = osal_thread_spin_unlock(lock);
-        if (ret != 0) {
-            SysErrorTrace("osal_thread_mutex_unlock failed %d", ret);
-        }
+        atom_spinlock_lock(&lock);
+        glob++;
+        atom_spinlock_unlock(&lock);
     }
 
     SysDebugTrace("Thread %d: glob=%d", (int)arg, glob);
@@ -147,10 +134,7 @@ int main(int argc, char *argv[])
         SysLogInit(pLogCfgName);
     }
 
-    lock = osal_thread_spin_create();
-    if ( lock == NULL) {
-        SysErrorTrace("osal_thread_mutex_create fail");
-    }
+    atom_spinlock_init(&lock);
 
     for(cnt = 0; cnt < 10; cnt++) {
         ret = osal_thread_create(OSAL_SCHED_OTHER, 0, 0, thread, (void *)(cnt + 1));
@@ -159,9 +143,8 @@ int main(int argc, char *argv[])
         }
     }
 
-    while (1) {
-        osal_thread_sleep(15);
-        SysDebugTrace("******** main thread *********");
+    while (glob != 100000000) {
+
     }
 
     return 0;
