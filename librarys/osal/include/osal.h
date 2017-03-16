@@ -3,5 +3,6 @@
 
 #include "osal_thread.h"
 #include "osal_lock.h"
+#include "atomic.h"
 #endif /* __OSAL_H__ */
 
