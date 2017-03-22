@@ -1,6 +1,7 @@
 include_directories(
 	include/
 	src/
+	../zlog/include/
 )
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wstrict-prototypes -fwrapv -pthread")
@@ -11,3 +12,4 @@ aux_source_directory(src DIR_SRCS)
 
 # 指定生成静态态链接库
 add_library (osal STATIC ${DIR_SRCS})
+target_link_libraries(osal zlog)

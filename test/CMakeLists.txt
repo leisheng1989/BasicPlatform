@@ -1,1 +1,1 @@
-add_subdirectory(kfifo)
+add_subdirectory(lock)

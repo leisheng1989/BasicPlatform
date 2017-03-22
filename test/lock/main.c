@@ -5,7 +5,6 @@
 #include <getopt.h>
 
 #include "config.h"
-#include "iniparser.h"
 #include "SysLogPublic.h"
 #include "os.h"
 
@@ -118,6 +117,14 @@ static void *thread(void *arg)
         //atom_spinlock_lock(&lock);
         os_mutex_lock(mutex);
         glob++;
+        glob++;
+        glob++;
+        glob++;
+        glob++;
+        glob++;
+        glob++;
+        glob++;
+        glob++;
         os_mutex_unlock(mutex);
         //atom_spinlock_unlock(&lock);
     }
@@ -148,11 +155,11 @@ int main(int argc, char *argv[])
         }
     }
 
-    while (glob != 100000000) {
+    while (glob != 900000000) {
 
     }
 
-    SysDebugTrace("lock test %s", (glob == 100000000) ? "pass" : "NG");
+    SysDebugTrace("lock test %s", (glob == 900000000) ? "pass" : "NG");
 
     return 0;
 }

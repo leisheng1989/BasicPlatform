@@ -4,13 +4,16 @@
 #include <errno.h>
 #include <pthread.h>
 
+#include "errno-base.h"
+#include "SysLogPublic.h"
+#include "assert.h"
 #include "lock.h"
 
 
-os_thread_mutex_t *os_thread_mutex_create(void)
+os_mutex_t *os_mutex_create(void)
 {
     int ret;
-    os_thread_mutex_t *lock;
+    os_mutex_t *lock;
 
     lock = malloc(sizeof(*lock));
     if (lock == NULL) {
@@ -34,31 +37,29 @@ os_thread_mutex_t *os_thread_mutex_create(void)
 }
 
 
-int os_thread_mutex_lock(os_thread_mutex_t *lock)
+int os_mutex_lock(os_mutex_t *mutex)
 {    
-    if ((lock == NULL) || (lock->mutex == NULL)) {
-        return -1;
-    }
+    ASSERT_RETURN(mutex != NULL, -EINVAL);
 
-    return pthread_mutex_lock(lock->mutex);
+    return pthread_mutex_lock(mutex->mutex);
 }
 
 
-int os_thread_mutex_unlock(os_thread_mutex_t *lock)
+int os_mutex_unlock(os_mutex_t *mutex)
 {
-    if ((lock == NULL) || (lock->mutex == NULL)) {
-        return -1;
-    }
+    ASSERT_RETURN(mutex != NULL, -EINVAL);
 
-    return pthread_mutex_unlock(lock->mutex);
+    return pthread_mutex_unlock(mutex->mutex);
 }
 
-void os_thread_mutex_destroy(os_thread_mutex_t *lock)
+void os_mutex_destroy(os_mutex_t *mutex)
 {
-    if ((lock) && (lock->mutex)) {
-        pthread_mutex_destroy(lock->mutex);
-        free(lock->mutex);
-        free(lock);
+    ASSERT(mutex != NULL);
+    ASSERT(mutex->mutex != NULL);
+    
+    if (pthread_mutex_destroy(mutex->mutex) == 0) {
+        free(mutex->mutex);
+        free(mutex);
     }
 }
 
@@ -128,59 +129,3 @@ void os_thread_rwlock_destroy(os_thread_rwlock_t *rwlock)
     }
 }
 
-
-/*
- * spin lock
- */
-os_thread_spin_t *os_thread_spin_create(void)
-{
-    int ret;
-    os_thread_spin_t *spin;
-
-    spin = malloc(sizeof(*spin));
-    if (spin == NULL) {
-        return NULL;
-    }
-
-    spin->lock = malloc(sizeof(pthread_spinlock_t));
-    if (spin->lock == NULL) {
-        free(spin);
-        return NULL;
-    }
-
-    ret = pthread_spin_init((pthread_spinlock_t *)spin->lock, 0);
-    if (ret != 0) {
-        free(spin->lock);
-        free(spin);
-        return NULL;
-    }
-
-    return spin;
-}
-
-int os_thread_spin_lock(os_thread_spin_t *spin)
-{    
-    if ((spin == NULL) || (spin->lock == NULL)) {
-        return -1;
-    }
-
-    return pthread_spin_lock(spin->lock);
-}
-
-int os_thread_spin_unlock(os_thread_spin_t *spin)
-{    
-    if ((spin == NULL) || (spin->lock == NULL)) {
-        return -1;
-    }
-
-    return pthread_spin_unlock(spin->lock);
-}
-
-void os_thread_spin_destroy(os_thread_spin_t *spin)
-{
-    if ((spin) && (spin->lock)) {
-        pthread_spin_destroy(spin->lock);
-        free(spin->lock);
-        free(spin);
-    }
-}
