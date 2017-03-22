@@ -22,6 +22,11 @@
 #ifndef _LINUX_KFIFO_H
 #define _LINUX_KFIFO_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 #include "types.h"
 #include "lock.h"
 
@@ -667,5 +672,9 @@ extern unsigned int __kfifo_out_peek_r(struct __kfifo *fifo,
 	void *buf, unsigned int len, size_t recsize);
 
 extern unsigned int __kfifo_max_r(unsigned int len, size_t recsize);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

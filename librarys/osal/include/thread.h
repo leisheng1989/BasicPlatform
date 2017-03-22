@@ -1,6 +1,11 @@
 #ifndef __OS_THREAD_H__
 #define __OS_THREAD_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 #define OS_SCHED_OTHER     0
 #define OS_SCHED_FIFO      1
 #define OS_SCHED_RR        2
@@ -26,6 +31,10 @@ int os_thread_create(int policy,
 unsigned long int os_thread_self(void);
 void os_thread_msleep(int ms);
 void os_thread_sleep(int s);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __OS_THREAD_H__ */
 

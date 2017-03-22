@@ -1,6 +1,10 @@
 #ifndef __ATOMIC_H__
 #define __ATOMIC_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #if defined(__GNUC__)
 
 #include <unistd.h>
@@ -175,8 +179,11 @@ static inline void atom_spinlock_unlock(atom_spinlock_t *lock)
      __sync_lock_release(&lock->lock);
 }
 
-
 #endif /* __GNUC__ */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __ATOMIC_H__ */
 

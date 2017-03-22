@@ -14,6 +14,11 @@
 
 #include "types.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 /*
  * deal with unrepresentable constant logarithms
  */
@@ -258,5 +263,10 @@ unsigned long __rounddown_pow_of_two(unsigned long n)
  */
 
 #define order_base_2(n) ilog2(roundup_pow_of_two(n))
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif /* _LINUX_LOG2_H */
