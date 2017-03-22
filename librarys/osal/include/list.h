@@ -1,7 +1,7 @@
 #ifndef _LINUX_LIST_H
 #define _LINUX_LIST_H
 
-#include "osal.h"
+#include "os.h"
 
 /*
 

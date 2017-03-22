@@ -1,5 +1,5 @@
-#ifndef __OSAL_TYPES_H__
-#define __OSAL_TYPES_H__
+#ifndef __OS_TYPES_H__
+#define __OS_TYPES_H__
 
 #include "errno-base.h"
 
@@ -166,5 +166,5 @@ typedef unsigned long long __u64;
 /* is x a power of 2? */
 //#define is_power_of_2(x)	((x) != 0 && (((x) & ((x) - 1)) == 0))
 
-#endif /* __OSAL_TYPES_H__ */
+#endif /* __OS_TYPES_H__ */
 

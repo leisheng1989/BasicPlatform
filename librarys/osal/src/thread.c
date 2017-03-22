@@ -5,9 +5,9 @@
 #include <errno.h>
 #include <pthread.h>
 
-#include "osal_thread.h"
+#include "thread.h"
 
-int osal_thread_create(int policy,
+int os_thread_create(int policy,
                     int priority, 
                     size_t  stack_size,
                     void *(*start)(void *),
@@ -23,15 +23,15 @@ int osal_thread_create(int policy,
     }
 
     switch(policy) {
-    case OSAL_SCHED_FIFO:
+    case OS_SCHED_FIFO:
         policy = SCHED_FIFO;
         break;
 
-    case OSAL_SCHED_RR:
+    case OS_SCHED_RR:
         policy = SCHED_RR;
         break;
 
-    case OSAL_SCHED_OTHER:
+    case OS_SCHED_OTHER:
     default:
         policy = SCHED_OTHER;
         break;
@@ -92,13 +92,13 @@ out:
 
 }
 
-unsigned long int osal_thread_self(void)
+unsigned long int os_thread_self(void)
 {
     return pthread_self();
 }
 
 
-void osal_thread_msleep(int ms) 
+void os_thread_msleep(int ms) 
 {
 	struct timespec ts;
 
@@ -108,7 +108,7 @@ void osal_thread_msleep(int ms)
 	nanosleep(&ts, NULL);
 }
 
-void osal_thread_sleep(int s)
+void os_thread_sleep(int s)
 {
 	sleep(s);
 }

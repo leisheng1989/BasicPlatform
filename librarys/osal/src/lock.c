@@ -4,13 +4,13 @@
 #include <errno.h>
 #include <pthread.h>
 
-#include "osal_lock.h"
+#include "lock.h"
 
 
-osal_thread_mutex_t *osal_thread_mutex_create(void)
+os_thread_mutex_t *os_thread_mutex_create(void)
 {
     int ret;
-    osal_thread_mutex_t *lock;
+    os_thread_mutex_t *lock;
 
     lock = malloc(sizeof(*lock));
     if (lock == NULL) {
@@ -34,7 +34,7 @@ osal_thread_mutex_t *osal_thread_mutex_create(void)
 }
 
 
-int osal_thread_mutex_lock(osal_thread_mutex_t *lock)
+int os_thread_mutex_lock(os_thread_mutex_t *lock)
 {    
     if ((lock == NULL) || (lock->mutex == NULL)) {
         return -1;
@@ -44,7 +44,7 @@ int osal_thread_mutex_lock(osal_thread_mutex_t *lock)
 }
 
 
-int osal_thread_mutex_unlock(osal_thread_mutex_t *lock)
+int os_thread_mutex_unlock(os_thread_mutex_t *lock)
 {
     if ((lock == NULL) || (lock->mutex == NULL)) {
         return -1;
@@ -53,7 +53,7 @@ int osal_thread_mutex_unlock(osal_thread_mutex_t *lock)
     return pthread_mutex_unlock(lock->mutex);
 }
 
-void osal_thread_mutex_destroy(osal_thread_mutex_t *lock)
+void os_thread_mutex_destroy(os_thread_mutex_t *lock)
 {
     if ((lock) && (lock->mutex)) {
         pthread_mutex_destroy(lock->mutex);
@@ -63,10 +63,10 @@ void osal_thread_mutex_destroy(osal_thread_mutex_t *lock)
 }
 
 
-osal_thread_rwlock_t *osal_thread_rwlock_create(void)
+os_thread_rwlock_t *os_thread_rwlock_create(void)
 {
     int ret;
-    osal_thread_rwlock_t *rwlock;
+    os_thread_rwlock_t *rwlock;
 
     rwlock = malloc(sizeof(*rwlock));
     if (rwlock == NULL) {
@@ -90,7 +90,7 @@ osal_thread_rwlock_t *osal_thread_rwlock_create(void)
 }
 
 
-int osal_thread_rwlock_rdlock(osal_thread_rwlock_t *rwlock)
+int os_thread_rwlock_rdlock(os_thread_rwlock_t *rwlock)
 {
     if ((rwlock == NULL) || (rwlock->lock == NULL)) {
         return -1;
@@ -99,7 +99,7 @@ int osal_thread_rwlock_rdlock(osal_thread_rwlock_t *rwlock)
     return pthread_rwlock_rdlock(rwlock->lock);
 }
 
-int osal_thread_rwlock_wrlock(osal_thread_rwlock_t *rwlock)
+int os_thread_rwlock_wrlock(os_thread_rwlock_t *rwlock)
 {
     if ((rwlock == NULL) || (rwlock->lock == NULL)) {
         return -1;
@@ -109,7 +109,7 @@ int osal_thread_rwlock_wrlock(osal_thread_rwlock_t *rwlock)
 }
 
 
-int osal_thread_rwlock_unlock(osal_thread_rwlock_t *rwlock)
+int os_thread_rwlock_unlock(os_thread_rwlock_t *rwlock)
 {
     if ((rwlock == NULL) || (rwlock->lock == NULL)) {
         return -1;
@@ -119,7 +119,7 @@ int osal_thread_rwlock_unlock(osal_thread_rwlock_t *rwlock)
 }
 
 
-void osal_thread_rwlock_destroy(osal_thread_rwlock_t *rwlock)
+void os_thread_rwlock_destroy(os_thread_rwlock_t *rwlock)
 {
     if ((rwlock) && (rwlock->lock)) {
         pthread_mutex_destroy(rwlock->lock);
@@ -132,10 +132,10 @@ void osal_thread_rwlock_destroy(osal_thread_rwlock_t *rwlock)
 /*
  * spin lock
  */
-osal_thread_spin_t *osal_thread_spin_create(void)
+os_thread_spin_t *os_thread_spin_create(void)
 {
     int ret;
-    osal_thread_spin_t *spin;
+    os_thread_spin_t *spin;
 
     spin = malloc(sizeof(*spin));
     if (spin == NULL) {
@@ -158,7 +158,7 @@ osal_thread_spin_t *osal_thread_spin_create(void)
     return spin;
 }
 
-int osal_thread_spin_lock(osal_thread_spin_t *spin)
+int os_thread_spin_lock(os_thread_spin_t *spin)
 {    
     if ((spin == NULL) || (spin->lock == NULL)) {
         return -1;
@@ -167,7 +167,7 @@ int osal_thread_spin_lock(osal_thread_spin_t *spin)
     return pthread_spin_lock(spin->lock);
 }
 
-int osal_thread_spin_unlock(osal_thread_spin_t *spin)
+int os_thread_spin_unlock(os_thread_spin_t *spin)
 {    
     if ((spin == NULL) || (spin->lock == NULL)) {
         return -1;
@@ -176,7 +176,7 @@ int osal_thread_spin_unlock(osal_thread_spin_t *spin)
     return pthread_spin_unlock(spin->lock);
 }
 
-void osal_thread_spin_destroy(osal_thread_spin_t *spin)
+void os_thread_spin_destroy(os_thread_spin_t *spin)
 {
     if ((spin) && (spin->lock)) {
         pthread_spin_destroy(spin->lock);

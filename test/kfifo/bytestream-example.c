@@ -14,7 +14,7 @@
 
 #include "config.h"
 #include "SysLogPublic.h"
-#include "osal.h"
+#include "os.h"
 
 
 /*

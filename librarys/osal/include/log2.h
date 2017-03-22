@@ -12,7 +12,7 @@
 #ifndef _LINUX_LOG2_H
 #define _LINUX_LOG2_H
 
-#include "osal_types.h"
+#include "types.h"
 
 /*
  * deal with unrepresentable constant logarithms

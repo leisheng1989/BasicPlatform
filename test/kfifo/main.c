@@ -6,7 +6,7 @@
 
 #include "config.h"
 #include "SysLogPublic.h"
-#include "osal.h"
+#include "os.h"
 
 #define LOGCFG_NAME_DEFAULT     "/opt/basic-platform/configs/log.conf"
 

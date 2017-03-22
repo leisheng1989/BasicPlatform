@@ -22,8 +22,8 @@
 #ifndef _LINUX_KFIFO_H
 #define _LINUX_KFIFO_H
 
-#include "osal_types.h"
-#include "osal_lock.h"
+#include "types.h"
+#include "lock.h"
 
 /*
  * How to porting drivers to the new generic FIFO API:

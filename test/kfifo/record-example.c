@@ -5,7 +5,7 @@
 
 #include "config.h"
 #include "SysLogPublic.h"
-#include "osal.h"
+#include "os.h"
 
 /*
  * This module shows how to create a variable sized record fifo.

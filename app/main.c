@@ -7,7 +7,7 @@
 #include "config.h"
 #include "iniparser.h"
 #include "SysLogPublic.h"
-#include "osal.h"
+#include "os.h"
 
 #define LOGCFG_NAME_DEFAULT     "/opt/basic-platform/configs/log.conf"
 
@@ -137,9 +137,9 @@ int main(int argc, char *argv[])
     atom_spinlock_init(&lock);
 
     for(cnt = 0; cnt < 10; cnt++) {
-        ret = osal_thread_create(OSAL_SCHED_OTHER, 0, 0, thread, (void *)(cnt + 1));
+        ret = os_thread_create(OS_SCHED_OTHER, 0, 0, thread, (void *)(cnt + 1));
         if (ret == 0) {
-            SysFatalTrace("osal_thread_create %d successfully", cnt);
+            SysFatalTrace("os_thread_create %d successfully", cnt);
         }
     }
 
