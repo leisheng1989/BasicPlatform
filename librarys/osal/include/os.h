@@ -7,6 +7,8 @@
 extern "C" {
 #endif
 
+#include <stdint.h>
+
 #include "SysLogPublic.h"
 #include "assert.h"
 #include "thread.h"

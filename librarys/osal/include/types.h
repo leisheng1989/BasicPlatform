@@ -3,7 +3,7 @@
 
 #include "errno-base.h"
 
-typedef _Bool			bool;
+typedef _Bool			    bool;
 
 typedef unsigned char		u8;
 typedef unsigned short		u16;
