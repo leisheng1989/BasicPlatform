@@ -104,29 +104,24 @@ int UsrOptHdl(int argc, char *argv[])
     return 0;
 }
 
-static volatile unsigned int glob = 0;
+static volatile int glob = 0;
 //static atom_spinlock_t lock;
-static os_mutex_t *mutex;
+//static os_mutex_t *mutex;
+static os_rwlock_t *rwlock;
 
 static void *thread(void *arg)
 {
     unsigned int loops = 10000000;
     unsigned int j;
-    
+
     for (j = 0; j < loops; j++) {
         //atom_spinlock_lock(&lock);
-        os_mutex_lock(mutex);
+        //os_mutex_lock(mutex);
+        os_rwlock_wrlock(rwlock);
         glob++;
-        glob++;
-        glob++;
-        glob++;
-        glob++;
-        glob++;
-        glob++;
-        glob++;
-        glob++;
-        os_mutex_unlock(mutex);
+        //os_mutex_unlock(mutex);
         //atom_spinlock_unlock(&lock);
+        os_rwlock_unlock(rwlock);
     }
 
     SysDebugTrace("Thread %d: glob=%d", (int)arg, glob);
@@ -146,8 +141,9 @@ int main(int argc, char *argv[])
     }
 
     //atom_spinlock_init(&lock);
-    mutex = os_mutex_create();
-    
+    //mutex = os_mutex_create();
+    rwlock = os_rwlock_create();
+
     for(cnt = 0; cnt < 10; cnt++) {
         ret = os_thread_create(OS_SCHED_OTHER, 0, 0, thread, (void *)(cnt + 1));
         if (ret != 0) {
@@ -155,11 +151,11 @@ int main(int argc, char *argv[])
         }
     }
 
-    while (glob != 900000000) {
+    while (glob != 100000000) {
 
     }
 
-    SysDebugTrace("lock test %s", (glob == 900000000) ? "pass" : "NG");
+    SysDebugTrace("lock test %s", (glob == 100000000) ? "pass" : "NG");
 
     return 0;
 }

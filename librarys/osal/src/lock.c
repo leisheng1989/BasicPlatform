@@ -64,10 +64,10 @@ void os_mutex_destroy(os_mutex_t *mutex)
 }
 
 
-os_thread_rwlock_t *os_thread_rwlock_create(void)
+os_rwlock_t *os_rwlock_create(void)
 {
     int ret;
-    os_thread_rwlock_t *rwlock;
+    os_rwlock_t *rwlock;
 
     rwlock = malloc(sizeof(*rwlock));
     if (rwlock == NULL) {
@@ -80,7 +80,7 @@ os_thread_rwlock_t *os_thread_rwlock_create(void)
         return NULL;
     }
 
-    ret = pthread_mutex_init((pthread_mutex_t *)rwlock->lock, NULL);
+    ret = pthread_rwlock_init((pthread_rwlock_t *)rwlock->lock, NULL);
     if (ret != 0) {
         free(rwlock->lock);
         free(rwlock);
@@ -91,39 +91,33 @@ os_thread_rwlock_t *os_thread_rwlock_create(void)
 }
 
 
-int os_thread_rwlock_rdlock(os_thread_rwlock_t *rwlock)
+int os_rwlock_rdlock(os_rwlock_t *rwlock)
 {
-    if ((rwlock == NULL) || (rwlock->lock == NULL)) {
-        return -1;
-    }
+    ASSERT_RETURN(rwlock != NULL, -EINVAL);
 
     return pthread_rwlock_rdlock(rwlock->lock);
 }
 
-int os_thread_rwlock_wrlock(os_thread_rwlock_t *rwlock)
+int os_rwlock_wrlock(os_rwlock_t *rwlock)
 {
-    if ((rwlock == NULL) || (rwlock->lock == NULL)) {
-        return -1;
-    }
+    ASSERT_RETURN(rwlock != NULL, -EINVAL);
 
     return pthread_rwlock_wrlock(rwlock->lock);
 }
 
 
-int os_thread_rwlock_unlock(os_thread_rwlock_t *rwlock)
+int os_rwlock_unlock(os_rwlock_t *rwlock)
 {
-    if ((rwlock == NULL) || (rwlock->lock == NULL)) {
-        return -1;
-    }
+    ASSERT_RETURN(rwlock != NULL, -EINVAL);
 
     return pthread_rwlock_unlock(rwlock->lock);
 }
 
 
-void os_thread_rwlock_destroy(os_thread_rwlock_t *rwlock)
+void os_rwlock_destroy(os_rwlock_t *rwlock)
 {
     if ((rwlock) && (rwlock->lock)) {
-        pthread_mutex_destroy(rwlock->lock);
+        pthread_rwlock_destroy(rwlock->lock);
         free(rwlock->lock);
         free(rwlock);
     }
