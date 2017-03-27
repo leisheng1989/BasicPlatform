@@ -3,6 +3,7 @@
 #include <string.h>
 #include <errno.h>
 #include <pthread.h>
+#include <semaphore.h>
 
 #include "errno-base.h"
 #include "SysLogPublic.h"
@@ -120,6 +121,72 @@ void os_rwlock_destroy(os_rwlock_t *rwlock)
         pthread_rwlock_destroy(rwlock->lock);
         free(rwlock->lock);
         free(rwlock);
+    }
+}
+
+
+/* 
+ * semaphore 
+ */
+os_sem_t *os_sem_create(void)
+{
+    int ret;
+    os_sem_t *sem;
+
+    sem = malloc(sizeof(*sem));
+    if (sem == NULL) {
+        return NULL;
+    }
+
+    sem->sem = malloc(sizeof(sem_t));
+    if (sem->sem == NULL) {
+        free(sem->sem);
+        return NULL;
+    }
+
+    ret = sem_init(sem->sem, 0, 0);
+    if (ret != 0) {
+        free(sem->sem);
+        free(sem);
+        return NULL;
+    }
+
+    return sem;
+}
+
+
+int os_sem_post(os_sem_t *sem)
+{    
+    ASSERT_RETURN(sem != NULL, -EINVAL);
+
+    return sem_post(sem->sem);
+}
+
+
+int os_sem_wait(os_sem_t *sem)
+{
+    ASSERT_RETURN(sem != NULL, -EINVAL);
+
+    return sem_wait(sem->sem);
+}
+
+
+int os_sem_trywait(os_sem_t *sem)
+{
+    ASSERT_RETURN(sem != NULL, -EINVAL);
+
+    return sem_trywait(sem->sem);
+}
+
+
+void os_sem_destroy(os_sem_t *sem)
+{
+    ASSERT(sem != NULL);
+    ASSERT(sem->sem != NULL);
+    
+    if (sem_destroy(sem->sem) == 0) {
+        free(sem->sem);
+        free(sem);
     }
 }
 

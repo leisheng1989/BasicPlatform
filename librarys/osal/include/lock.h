@@ -14,6 +14,10 @@ typedef struct os_rwlock{
     void *lock;
 }os_rwlock_t;
 
+typedef struct os_sem{
+    void *sem;
+}os_sem_t;
+
 
 os_mutex_t *os_mutex_create(void);
 int os_mutex_lock(os_mutex_t *mutex);
@@ -25,6 +29,12 @@ int os_rwlock_rdlock(os_rwlock_t *rwlock);
 int os_rwlock_wrlock(os_rwlock_t *rwlock);
 int os_rwlock_unlock(os_rwlock_t *rwlock);
 void os_rwlock_destroy(os_rwlock_t *rwlock);
+
+os_sem_t *os_sem_create(void);
+int os_sem_post(os_sem_t *sem);
+int os_sem_wait(os_sem_t *sem);
+int os_sem_trywait(os_sem_t *sem);
+void os_sem_destroy(os_sem_t *sem);
 
 #ifdef __cplusplus
 }
